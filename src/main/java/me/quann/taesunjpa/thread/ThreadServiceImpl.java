@@ -5,8 +5,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import me.quann.taesunjpa.channel.Channel;
 import me.quann.taesunjpa.common.PageDto;
+import me.quann.taesunjpa.common.SearchCond;
 import me.quann.taesunjpa.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +21,7 @@ public class ThreadServiceImpl implements ThreadService {
 
 
     @Override
+    @Transactional
     public List<Thread> getMentionedThreadList(User user) {
         QThread thread = QThread.thread;
         BooleanExpression predicate = thread.mentions.any().user.eq(user);
@@ -44,9 +45,16 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Thread> selectMentionedThreadList(Long userId, PageDto pageDTO) {
         ThreadSearchCond cond = ThreadSearchCond.builder().mentionedUserId(userId).build();
         return threadRepository.search(cond, pageDTO.toPageable());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Thread> selectUserThreads(Long userId, PageDto pageDto) {
+        SearchCond cond = SearchCond.builder().threadOwnerUserId(userId).build();
+        return threadRepository.searchUserThreads(cond, pageDto.toPageable());
     }
 }

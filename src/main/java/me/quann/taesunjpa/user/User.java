@@ -5,6 +5,7 @@ import lombok.*;
 import me.quann.taesunjpa.common.TimeStamp;
 import me.quann.taesunjpa.mention.CommentMention;
 import me.quann.taesunjpa.mention.ThreadMention;
+import me.quann.taesunjpa.thread.Thread;
 import me.quann.taesunjpa.userChannel.UserChannel;
 
 import java.util.LinkedHashSet;
@@ -54,6 +55,9 @@ public class User extends TimeStamp {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ThreadMention> threadMentions = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Thread> threads = new LinkedHashSet<>();
+
     /**
      * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
      */
@@ -69,4 +73,7 @@ public class User extends TimeStamp {
         this.password = password;
     }
 
+    public void addThread(Thread thread) {
+        this.threads.add(thread);
+    }
 }

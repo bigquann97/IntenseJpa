@@ -5,13 +5,13 @@ import me.quann.taesunjpa.channel.ChannelRepository;
 import me.quann.taesunjpa.comment.Comment;
 import me.quann.taesunjpa.comment.CommentRepository;
 import me.quann.taesunjpa.common.PageDto;
-import me.quann.taesunjpa.emotion.Emotion;
 import me.quann.taesunjpa.user.User;
 import me.quann.taesunjpa.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +29,8 @@ class ThreadServiceImplTest {
 
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    private ThreadRepository threadRepository;
 
     @Test
     void getMentionedThreadTest() {
@@ -114,6 +116,41 @@ class ThreadServiceImplTest {
 
         // then
         assert mentionedThreadList.getTotalElements() == 2;
+    }
+
+    @Test
+    @DisplayName("전체 채널에 내가 작성한 쓰레드 그리고 댓글 중 이모지가 달려있는 쓰레드 상세정보 목록")
+    @Transactional
+    void test() {
+        // given
+        User user = User.builder().username("1").password("1").build();
+        User user2 = User.builder().username("2").password("2").build();
+
+        Channel channel = Channel.builder().name("c1").type(Channel.Type.PUBLIC).build();
+
+        Thread thread1 = Thread.builder().message("t1").build();
+        thread1.setUser(user);
+        thread1.addEmotion(user, "te1");
+
+        Thread thread2 = Thread.builder().message("t2").build();
+        thread2.setUser(user);
+        thread2.addEmotion(user, "te1");
+        thread2.addEmotion(user2, "emo2");
+
+        thread1.setChannel(channel);
+        thread2.setChannel(channel);
+
+        User saveUser = userRepository.save(user);
+        Channel saveChannel = channelRepository.save(channel);
+        Thread saveThread1 = threadRepository.save(thread1);
+        Thread saveThread2 = threadRepository.save(thread2);
+
+        // when
+        var pageDto = PageDto.builder().currentPage(1).size(100).build();
+        var myEmotionedThread = threadService.selectUserThreads(saveUser.getId(), pageDto);
+        System.out.println(saveUser.getId() + " ------");
+        // then
+        assert myEmotionedThread.getTotalElements() == 2;
     }
 
     private User getTestUser(String username, String password) {

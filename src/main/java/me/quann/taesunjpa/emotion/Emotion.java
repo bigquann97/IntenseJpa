@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import me.quann.taesunjpa.common.TimeStamp;
 import me.quann.taesunjpa.thread.Thread;
 import me.quann.taesunjpa.user.User;
 
@@ -14,7 +15,7 @@ import me.quann.taesunjpa.user.User;
 
 // jpa
 @MappedSuperclass
-public class Emotion {
+public class Emotion extends TimeStamp {
 
     /**
      * 컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.

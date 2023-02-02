@@ -72,6 +72,11 @@ public class Thread extends TimeStamp {
         channel.addThread(this);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+        user.addThread(this);
+    }
+
     public void addMention(User user) {
         var mention = ThreadMention.builder().user(user).thread(this).build();
         this.mentions.add(mention);
