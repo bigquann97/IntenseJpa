@@ -16,4 +16,6 @@ public interface ThreadService {
     List<Thread> selectNotEmptyThreadList(Channel channel);
 
     Page<Thread> selectMentionedThreadList(Long userId, PageDto pageDto);
+
+    Page<Thread> selectUserThreads(Long userId, PageDto pageDto);
 }
