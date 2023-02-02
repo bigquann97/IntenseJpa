@@ -44,6 +44,7 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Override
+    @Transactional
     public Page<Thread> selectMentionedThreadList(Long userId, PageDto pageDTO) {
         ThreadSearchCond cond = ThreadSearchCond.builder().mentionedUserId(userId).build();
         return threadRepository.search(cond, pageDTO.toPageable());

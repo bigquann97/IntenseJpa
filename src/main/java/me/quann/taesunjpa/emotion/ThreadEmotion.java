@@ -1,12 +1,15 @@
 package me.quann.taesunjpa.emotion;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.quann.taesunjpa.thread.Thread;
+import me.quann.taesunjpa.user.User;
 
 // lombok
 @Getter
@@ -23,12 +26,17 @@ public class ThreadEmotion extends Emotion {
     /**
      * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
      */
-
+    @Builder
+    public ThreadEmotion(User user, Thread thread, String body) {
+        this.user = user;
+        this.thread = thread;
+        this.body = body;
+    }
 
     /**
      * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "thread_id")
     Thread thread;
 

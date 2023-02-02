@@ -25,11 +25,10 @@ public class Emotion {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String body;
+    protected String body;
     /**
      * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
      */
-
 
     /**
      * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
@@ -37,7 +36,7 @@ public class Emotion {
 
     @ManyToOne
     @MapsId("user_id")
-    User user;
+    protected User user;
 
     /**
      * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

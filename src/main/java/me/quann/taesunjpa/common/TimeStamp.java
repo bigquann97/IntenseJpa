@@ -20,14 +20,14 @@ public class TimeStamp {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @CreatedBy
-    @ManyToOne
-    private User createdBy;
+//    @CreatedBy
+//    @ManyToOne
+//    private User createdBy;
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @LastModifiedBy
-    @ManyToOne
-    private User modifiedBy;
+//    @LastModifiedBy
+//    @ManyToOne
+//    private User modifiedBy;
 }
